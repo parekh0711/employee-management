@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+</head>
+<script>
+    
+    async function get_page(data) {
+        console.log(data)
+        if(data["type"] === "OFFER") {
+            await fetch('http://localhost:8000/offer-letter').then(async (res) => {
+                const html_data = await res.text() 
+                window.history.pushState(
+                    {  },
+                    "",
+                    window.location.origin + "/frontend/ad_home.html"
+                );
+                document.body.innerHTML = html_data
+                document.getElementById("infobar").textContent = "Please check the details and generate the letter"
+                document.getElementById("submission").remove()
+                
+                document.getElementById('fname').value = data["emp_name"].split(" ")[0]
+                document.getElementById('lname').value = data["emp_name"].split(" ")[1]
+                document.getElementById('doj').value = data["joining_date"]
+                document.getElementById('ctc').value = data["emp_ctc"]
+                document.getElementById('position').value = data["emp_designation"]
+                document.getElementById('address').value = data["emp_address"]
+            })
+        }
+        if(data["type"] === "EXPERIENCE") {
+            await fetch('http://localhost:8000/experience-letter').then(async (res) => {
+                const html_data = await res.text() 
+                window.history.pushState(
+                    {  },
+                    "",
+                    window.location.origin + "/frontend/ad_home.html"
+                );
+                document.body.innerHTML = html_data
+                document.getElementById("infobar").textContent = "Please check the details and generate the letter"
+                document.getElementById("submission").remove()
+                
+                document.getElementById('fname').value = data["emp_name"].split(" ")[0]
+                document.getElementById('lname').value = data["emp_name"].split(" ")[1]
+                document.getElementById('empid').value = data["emp_id"]
+                document.getElementById('doj').value = data["join_date"]
+                document.getElementById('dol').value = data["leave_date"]
+                document.getElementById('department').value = data["emp_dept"]
+                document.getElementById('position').value = data["emp_designation"]
+
+            })
+        }
+        if(data["type"] === "HIKE") {
+            await fetch('http://localhost:8000/hike-letter').then(async (res) => {
+                const html_data = await res.text() 
+                window.history.pushState(
+                    {  },
+                    "",
+                    window.location.origin + "/frontend/ad_home.html"
+                );
+                document.body.innerHTML = html_data
+                document.getElementById("infobar").textContent = "Please check the details and generate the letter"
+                document.getElementById("submission").remove()
+                
+                document.getElementById('fname').value = data["emp_name"].split(" ")[0]
+                document.getElementById('lname').value = data["emp_name"].split(" ")[1]
+                document.getElementById('position').value = data["emp_designation"]
+                document.getElementById('empid').value = data["emp_id"]
+                document.getElementById('ctc').value = data["emp_ctc"]
+
+            })
+        }
+        if(data["type"] === "RELIEVE") {
+            await fetch('http://localhost:8000/relieving-letter').then(async (res) => {
+                const html_data = await res.text() 
+                window.history.pushState(
+                    {  },
+                    "",
+                    window.location.origin + "/frontend/ad_home.html"
+                );
+                document.body.innerHTML = html_data
+                document.getElementById("infobar").textContent = "Please check the details and generate the letter"
+                document.getElementById("submission").remove()
+                
+                document.getElementById('fname').value = data["emp_name"].split(" ")[0]
+                document.getElementById('lname').value = data["emp_name"].split(" ")[1]
+                document.getElementById('empid').value = data["emp_id"]
+                document.getElementById('resign').value = data["resig_date"]
+                document.getElementById('relive').value = data["letter_date"]
+
+            })
+        }
+        if(data["type"] === "EMPLOYEE") {
+            await fetch('http://localhost:8000/resignation-letter').then(async (res) => {
+                const html_data = await res.text() 
+                window.history.pushState(
+                    {  },
+                    "",
+                    window.location.origin + "/frontend/ad_home.html"
+                );
+                document.body.innerHTML = html_data
+                document.getElementById("infobar").textContent = "Please check the details and generate the letter"
+                document.getElementById("submission").remove()
+                
+                document.getElementById('emp_id').value = data["emp_id"]
+                document.getElementById('fname').value = data["emp_name"].split(" ")[0]
+                document.getElementById('lname').value = data["emp_name"].split(" ")[1]
+                document.getElementById('gender').value = data["emp_gender"]
+                document.getElementById('pan').value = data["emp_pan"]
+                document.getElementById('dob').value = data["emp_dob"]
+                document.getElementById('fat_name').value = data["emp_father"]
+                document.getElementById('qual').value = data["emp_qualification"]
+                document.getElementById('paddress').value = data["emp_perm_address"]
+                document.getElementById('caddress').value = data["emp_curr_address"]
+                document.getElementById('email').value = data["emp_email"]
+                document.getElementById('phone').value = data["emp_phone"]
+                document.getElementById('watsapp').value = data["emp_whatsapp"]
+                document.getElementById('rdetails').value = data["emp_referrer"]
+                document.getElementById('iname').value = data["emp_institute"]
+                document.getElementById('offer_date').value = data["offer_date"]
+                document.getElementById('doj').value = data["join_date"]
+                document.getElementById('designation').value = data["emp_designation"]
+                document.getElementById('pdesignation').value = data["curr_desig"]
+                document.getElementById('octc').value = data["offer_ctc"]
+                document.getElementById('pctc').value = data["curr_ctc"]
+                document.getElementById('resign_date').value = data["resig_date"]
+                document.getElementById('relive_date').value = data["rel_date"]
+                document.getElementById('cname').value = data["company_name"]
+                document.getElementById('location').value = data["location"]
+                document.getElementById('tech').value = data["tech"]
+                document.getElementById('pf_acc').value = data["pf_acc"]
+                document.getElementById('ncompany').value = data["new_company"]
+                document.getElementById('b_acc').value = data["bank_acc"]
+                document.getElementById('bname').value = data["bank_name"]
+                document.getElementById('dept').value = data["emp_dept"]
+
+            })
+        }
+        if(data["type"] === "PAYSLIP") {
+            await fetch('http://localhost:8000/payslip-letter').then(async (res) => {
+                const html_data = await res.text() 
+                window.history.pushState(
+                    {  },
+                    "",
+                    window.location.origin + "/frontend/ad_home.html"
+                );
+                document.body.innerHTML = html_data
+                document.getElementById("infobar").textContent = "Please check the details and generate the letter"
+                document.getElementById("submission").remove()
+                
+                document.getElementById('fname').value = data["emp_name"].split(' ')[0]
+                document.getElementById('lname').value = data["emp_name"].split(' ')[1]
+                document.getElementById('empid').value = data["emp_id"]
+                document.getElementById('empband').value = data["emp_band"]
+                document.getElementById('nwd').value = data["nwd"]
+                document.getElementById('dw').value = data["dw"]
+                document.getElementById('lop').value = data["lop"]
+                document.getElementById('esi').value = data["esi"]
+                document.getElementById('empdept').value = data["emp_dept"]
+                document.getElementById('position').value = data["emp_designation"]
+                document.getElementById('empdob').value = data["emp_dob"]
+                document.getElementById('emppan').value = data["emp_pan"]
+                document.getElementById('empdoj').value = data["emp_doj"]
+                document.getElementById('location').value = data["location"]
+                document.getElementById('ctc').value = data["emp_ctc"]
+                document.getElementById('pf').value = data["pf"]
+            })
+        }
+    }
+    
+    async function get_forms(){
+        await fetch('http://localhost:8000/check-form').then(res => res.json())
+        .then(res => {
+            console.log(res)
+            const rootdiv = document.getElementById('pdr') 
+            rootdiv.innerHTML = ""
+            res.map((val, key) => {
+                let docele = document.createElement('div')
+                docele.innerHTML = `<div style="display:flex;flex-direction:column;">
+                    <h4>${key + 1}. Form type: ${val["type"]}</h4>
+                    <h6>HR ID: ${val["hr_id"]}</h6>
+                    <button style="margin-bottom:10px" class="btn btn-secondary">View request</button>
+                    </div>
+                    ` 
+                docele.addEventListener("click", () => get_page(val))
+                rootdiv.appendChild(docele);
+            })
+        })
+    }
+
+    async function generate_letter_offer() {
+        const fname = document.getElementById("fname").value;
+        const lname = document.getElementById("lname").value;
+        const doj = document.getElementById("doj").value;
+        const ctc = document.getElementById("ctc").value;
+        const position = document.getElementById("position").value;
+        const address = document.getElementById("address").value;
+        var today = new Date();
+        var date =
+            today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+
+        await fetch("http://localhost:8000/generate-letter", {
+            method: "POST",
+            headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+            Accept: "application/pdf",
+            },
+            body: JSON.stringify({
+            type: "offer",
+            data: {
+                hr_id: 123,
+                letter_date: date,
+                emp_address: address,
+                emp_name: fname + " " + lname,
+                emp_designation: position,
+                joining_date: doj,
+                emp_ctc: ctc,
+            },
+            }),
+        })
+            .then((response) => response.blob())
+            .then((blob) => {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = `${fname + ' ' + lname}_offer_letter.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            });
+
+}
+    
+    async function generate_letter_exp() {
+    const fname = document.getElementById("fname").value;
+    const lname = document.getElementById("lname").value;
+    const position = document.getElementById("position").value;
+    const emp_id = document.getElementById("empid").value;
+    const doj = document.getElementById("doj").value;
+    const dol = document.getElementById("dol").value;
+    const department = document.getElementById("department").value;
+
+
+    var today = new Date();
+    var date =
+        today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+
+    await fetch("http://localhost:8000/generate-letter", {
+        method: "POST",
+        headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true",
+        Accept: "application/pdf",
+        },
+        body: JSON.stringify({
+        type: "experience",
+        data: {
+            hr_id: 123,
+            letter_date: date,
+            emp_name: fname + " " + lname,
+            emp_designation: position,
+            emp_id: emp_id,
+            join_date: doj,
+            leave_date: dol,
+            curr_date: date,
+            emp_dept: department
+        },
+        }),
+    })
+        .then((response) => response.blob())
+        .then((blob) => {
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = `${fname + ' ' + lname}_exp_letter.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        });
+}
+
+    async function generate_letter_hike() {
+        const fname = document.getElementById('fname').value
+        const lname = document.getElementById('lname').value
+        const ctc = document.getElementById('ctc').value
+        const position = document.getElementById('position').value
+        const emp_id = document.getElementById('empid').value
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+
+        await fetch('http://localhost:8000/generate-letter', {
+            method : "POST",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Credentials": "true",
+                "Accept" : "application/pdf"
+            },
+            body: JSON.stringify({
+            "type" : "hike",
+            "data" : {
+                "hr_id" : 123,
+                "letter_date" : date,
+                "emp_name": fname + ' ' + lname,
+                "emp_designation": position,
+                "emp_ctc": ctc,
+                "emp_id" : emp_id,
+                "effective_date" : document.getElementById('eff_date').value
+            }
+            })
+        }).then(response => response.blob())
+        .then(blob => {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = `${fname + ' ' + lname}_hike_letter.pdf`;
+            document.body.appendChild(a); 
+            a.click();    
+            a.remove();          
+        });
+
+    }
+    
+    async function generate_letter_relieving() {
+        const fname = document.getElementById('fname').value
+        const lname = document.getElementById('lname').value
+        const emp_id = document.getElementById('empid').value
+        const relive = document.getElementById('relive').value
+        const resign = document.getElementById('resign').value
+
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+
+        await fetch('http://localhost:8000/generate-letter', {
+            method : "POST",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Credentials": "true",
+                "Accept" : "application/pdf"
+            },
+            body: JSON.stringify({
+            "type" : "relieving",
+            "data" : {
+                "hr_id" : 123,
+                "emp_name": fname + ' ' + lname,
+                "letter_date" : resign,
+                "resig_date" : relive,
+                "emp_id" : emp_id,
+                "curr_date" : date
+            }
+            })
+        }).then(response => response.blob())
+        .then(blob => {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = `${fname + ' ' + lname}_rel_letter.pdf`;
+            document.body.appendChild(a); 
+            a.click();    
+            a.remove();          
+        });
+
+    }
+
+    async function generate_letter_resign() {
+        const empid = document.getElementById('emp_id').value
+        const fname = document.getElementById('fname').value
+        const lname = document.getElementById('lname').value
+        const gender = document.getElementById('gender').value
+        const pan = document.getElementById('pan').value
+        const dob = document.getElementById('dob').value
+        const fat_name = document.getElementById('fat_name').value
+        const qual= document.getElementById('qual').value
+        const paddress = document.getElementById('paddress').value
+        const caddress= document.getElementById('caddress').value
+        const email= document.getElementById('email').value
+        const phone = document.getElementById('phone').value
+        const watsapp = document.getElementById('watsapp').value
+        const rdetails = document.getElementById('rdetails').value
+        const iname= document.getElementById('iname').value
+        const offer_date = document.getElementById('offer_date').value
+        const doj = document.getElementById('doj').value
+        const designation = document.getElementById('designation').value
+        const pdesignation= document.getElementById('pdesignation').value
+        const octc = document.getElementById('octc').value
+        const pctc = document.getElementById('pctc').value
+        const resign_date = document.getElementById('resign_date').value
+        const relive_date = document.getElementById('relive_date').value
+        const cname= document.getElementById('cname').value
+        const location= document.getElementById('location').value
+        const tech= document.getElementById('tech').value
+        const pf_acc = document.getElementById('pf_acc').value
+        const ncompany = document.getElementById('ncompany').value
+        const b_acc = document.getElementById('b_acc').value
+        const bname = document.getElementById('bname').value
+        const dept = document.getElementById('dept').value
+
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+
+        await fetch('http://localhost:8000/generate-letter', {
+            method : "POST",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Credentials": "true",
+                "Accept" : "application/pdf"
+            },
+            body: JSON.stringify({
+            "type" : "register",
+            "data" : {
+                "emp_id" : empid,
+                "emp_name" : fname + ' ' + lname,
+                "emp_designation" : designation,
+                "emp_dept" : dept,
+                "emp_gender" : gender,
+                "emp_pan" : pan,
+                "emp_dob" : dob,
+                "emp_father" : fat_name,
+                "emp_qualification" : qual,
+                "emp_perm_address" : paddress,
+                "emp_curr_address" : caddress,
+                "emp_email" : email,
+                "emp_phone" : phone,
+                "emp_whatsapp" : watsapp,
+                "emp_referrer" : rdetails,
+                "emp_institute" : iname,
+                "offer_date" : offer_date,
+                "offer_desig" : designation,
+                "offer_ctc" : octc,
+                "resig_date" : resign_date,
+                "company_name" : cname,
+                "tech" : tech,
+                "new_company" : ncompany,
+                "bank_acc" : b_acc,
+                "join_date" : doj,
+                "curr_desig" : pdesignation,
+                "curr_ctc" : pctc,
+                "rel_date" : relive_date,
+                "location" : location,
+                "pf_acc" : pf_acc,
+                "bank_name" : bname
+            }
+            })
+        }).then(response => response.blob())
+        .then(blob => {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = `${fname + ' ' + lname}_resign_letter.pdf`;
+            document.body.appendChild(a); 
+            a.click();    
+            a.remove();          
+        });
+
+    }
+    
+
+    async function generate_letter_payslip() {
+
+        const fname = document.getElementById('fname').value
+        const lname = document.getElementById('lname').value
+        const emp_id = document.getElementById('empid').value
+        const band = document.getElementById('empband').value
+        const dept = document.getElementById('empdept').value
+        const designation = document.getElementById('position').value
+        const dob = document.getElementById('empdob').value
+        const pan = document.getElementById('emppan').value
+        const doj = document.getElementById('empdoj').value
+        const location = document.getElementById('location').value
+        const nwd = document.getElementById('nwd').value
+        const dw = document.getElementById('dw').value
+        const lop = document.getElementById('lop').value
+        const ctc = document.getElementById('ctc').value
+        const esi = document.getElementById('esi').value
+        const pf = document.getElementById('pf').value
+        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+
+        await fetch('http://localhost:8000/generate-letter', {
+            method : "POST",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Credentials": "true",
+                "Accept" : "application/pdf"
+            },
+            body: JSON.stringify({
+            "type" : "payslip",
+            "data" : {
+                "hr_id": 123,
+                "letter_month": months[new Date().getMonth()],
+                "letter_year": new Date().getFullYear(),
+                "emp_name": fname + ' ' + lname,
+                "emp_id": emp_id,
+                "emp_band": band,
+                "emp_dept": dept,
+                "emp_designation": designation,
+                "emp_dob": dob,
+                "emp_pan": pan,
+                "emp_doj": doj,
+                "location": location,
+                "nwd": nwd,
+                "dw": dw,
+                "lop": lop,
+                "esi": esi,
+                "pf": pf,
+                "emp_ctc": ctc,
+            }
+            })
+        }).then(response => response.blob())
+        .then(blob => {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = `${fname + ' ' + lname}_payslip.pdf`;
+            document.body.appendChild(a); 
+            a.click();    
+            a.remove();          
+        });
+
+    }
+    async function get_breakup() {
+        const ctc = document.getElementById("ctc").value;
+        await fetch("http://localhost:8000/ctc", {
+            method: "POST",
+            headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+            },
+            body: JSON.stringify({
+            ctc: ctc,
+            }),
+        }).then(async (res) => {
+            const data = await res.json();
+            console.log(data);
+            alert(JSON.stringify(data));
+        });
+}
+
+</script>
+<body style="overflow-x: hidden;">
+    <nav class="navbar navbar-dark bg-dark">
+        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; width: 100%;">
+            <div style="color: white;">
+                <h3>
+                    HR Panel
+                </h3>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary"><a style="color: white; text-decoration: none;" href="login.html">Logout</a></button>
+            </div>
+        </div>
+      </nav>
+      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px;">
+          <h1>Admin Dashboard</h1>
+          <img style="margin-bottom: 30px;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKJQp8ndvEkIa-u1rMgJxVc7BBsR11uSLHGA&usqp=CAU">
+            <div  style="display:flex;flex-direction: row; justify-content: space-evenly; align-items: center;width: 100%;">
+                <div>
+                    <h3>Pending Requests</h3>
+                    <div id="pdr" style="width:600px; color:white;height: max-content; background-color: rgb(0, 0, 0); padding: 30px; border-radius: 20px;">
+                    </div>
+                </div>
+            </div>
+            <button onclick=get_forms() style="margin-top: 10px;" class="btn btn-primary">Get requests</button>
+      </div>
+</body>
+</html>

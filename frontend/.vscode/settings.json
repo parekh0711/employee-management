@@ -1,0 +1,10 @@
+{
+  "liveServer.settings.port": 5501,
+  "liveServer.settings.ignoreFiles": [
+    ".vscode/**",
+    "**/*.scss",
+    "**/*.sass",
+    "**/*.ts",
+    "**" //This bit stops the extension's live reloading feature.
+  ]
+}

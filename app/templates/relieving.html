@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relieving Letter Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+</head>
+<script>
+async function generate_letter() {
+        const fname = document.getElementById('fname').value
+        const lname = document.getElementById('lname').value
+        const emp_id = document.getElementById('empid').value
+        const relive = document.getElementById('relive').value
+        const resign = document.getElementById('resign').value
+
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+
+        await fetch('http://localhost:8000/generate-letter', {
+            method : "POST",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Credentials": "true",
+                "Accept" : "application/pdf"
+            },
+            body: JSON.stringify({
+            "type" : "relieving",
+            "data" : {
+                "hr_id" : 123,
+                "emp_name": fname + ' ' + lname,
+                "letter_date" : resign,
+                "resig_date" : relive,
+                "emp_id" : emp_id
+            }
+            })
+        }).then(response => response.blob())
+        .then(blob => {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = "file.pdf";
+            document.body.appendChild(a); 
+            a.click();    
+            a.remove();          
+        });
+
+    }
+    
+    async function submit_data(){
+        const fname = document.getElementById('fname').value
+        const lname = document.getElementById('lname').value
+        const emp_id = document.getElementById('empid').value
+        const relive = document.getElementById('relive').value
+        const resign = document.getElementById('resign').value
+
+
+
+        if(fname === "" || lname === "" ||  relive == "" || resign == "" || emp_id == "") {
+            return
+        }
+
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        await fetch('http://localhost:8000/submit-form', {
+            method : "POST",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Credentials": "true",
+            },
+            body: JSON.stringify({
+            "type" : "offer",
+            "data" : {
+                "hr_id" : 123,
+                "letter_date" : date,
+                "emp_name": fname + ' ' + lname,
+                "letter_date" : resign,
+                "resig_date" : relive,
+                "emp_id" : emp_id
+            }
+            }),
+        }).then(async (res) => {
+            alert('Form submitted for approval')
+        }).catch(err => {
+            console.log(err)
+            alert('Some error occured. Try again')
+        })
+
+    }
+
+    async function getempinfo(type){
+        const id = document.getElementById('emp').value
+        console.log(id)
+        await fetch("http://localhost:8000/fetch-employee", {
+            method : "POST",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Credentials": "true",
+            },
+            body: JSON.stringify({
+                emp_id: id,
+            }),
+        }).then(async (res) => {
+            const res_data = await res.json()
+            console.log(res_data[0])
+            const employee = res_data[0]
+            if (Object.keys(res_data).length == 0) {
+                alert("No matching employee found")
+                return 
+            }
+    
+            document.getElementById('fname').value = employee["emp_name"].split(' ')[0]
+            document.getElementById('lname').value = employee["emp_name"].split(' ')[1]
+            document.getElementById('empid').value = employee["emp_id"]
+            document.getElementById('resign').value = employee["resig_date"]
+            document.getElementById('relive').value = employee["rel_date"]
+            
+        })
+    }
+
+</script>
+<body style="overflow-x: hidden;">
+    <nav class="navbar navbar-dark bg-dark">
+        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%;">
+            <div style="color: white;">
+                <h3>
+                    HR Panel
+                </h3>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary">Logout</button>
+            </div>
+        </div>
+      </nav>
+      
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <h1 class="display-3" style="margin-top: 30px; margin-bottom: 20px;">Relieving Letter Details</h1>
+        <h6 id="infobar" style="margin-bottom: 0px">Please fill in all relevant details to send for approval</h6>
+        <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+            <div style="width: 50%; padding-right: 600px;">
+                <img height="600px" width="700px" src="https://www.jobsoid.com/wp-content/uploads/2020/04/Purpose-of-a-Job-Offer-Letter-640x480.png">
+            </div>
+            <div style="width: 100%; margin-left: 20px;">
+                <div style="margin-top: 40px; margin-bottom: 40px;">
+                    <input placeholder="Enter Employee ID" id="emp" style="width: fit-content;" class="form-control"></input>
+                    <button onclick="getempinfo('reliving')" class="btn btn-dark" style="margin-top: 10px">Get Employee Information</button>
+                </div>
+                <form onsubmit="return false" id="former" class="needs-validation" >
+                    <h4>Name:</h4>
+                    <div class="form-row" style="margin-bottom: 20px;">
+                        <div class="col">
+                          <input id="fname" type="text" class="form-control" placeholder="First name" required>
+                        </div>
+                        <div class="col">
+                          <input id="lname" style="width: 350px;" type="text" class="form-control" placeholder="Last name" required>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <h4>Employee ID:</h4>
+                        <input id="empid" style="width: fit-content;" type="text" class="form-control" placeholder="Enter Position" required>
+                    </div> 
+                    <div style="margin-bottom: 20px;">
+                        <h4>Resignation Date:</h4>
+                        <input id="resign" style="width: fit-content;" class="form-control" type="date" required></input>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <h4>Reliving Date:</h4>
+                        <input id="relive" style="width: fit-content;" class="form-control" type="date" required></input>
+                    </div>
+
+
+                    <input id="submission" type="submit" value="Submit for Approval" onclick=submit_data_relieving() class="btn btn-primary"></button>
+                </form>
+                <button id="gen_btn" class="btn btn-secondary" onclick=generate_letter_relieving()>Generate Letter</button>
+        </div>
+    </div>
+</body>
+</html>

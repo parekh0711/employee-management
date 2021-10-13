@@ -1,0 +1,7 @@
+fastapi
+docx2pdf
+aiofiles
+databases
+aiosqlite
+docxtpl
+uvicorn
